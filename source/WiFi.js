@@ -20,45 +20,6 @@ enyo.kind({
 	}
 });
 
-/*
-{name: "SetRadioState",
-kind: "WiFiService",
-method: "setstate",
-onFailure: "handleSetStateFailure"},
-
-{name: "GetConnectionStatus",
-kind: "WiFiService",
-method: "getstatus",
-subscribe: true,
-resubscribe: true,
-onResponse: "handleWiFiConnectionStatus"},
-
-{name: "FindNetworks",
-kind: "WiFiService",
-method: "findnetworks",
-onResponse: "handleFindNetworksResponse"},
-
-{name: "Connect",
-kind: "WiFiService",
-method: "connect",
-onResponse: "handleConnectResponse"},
-
-{name: "GetProfileInfo",
-kind: "WiFiService",
-method: "getprofile",
-onResponse: "handleProfileInfoResponse"},
-
-{name: "GetWiFiInfo",
-kind: "WiFiService",
-method: "getinfo",
-onSuccess: "handleWiFiInfoResponse"},
-
-{name: "DeleteProfile",
-kind: "WiFiService", 
-method: "deleteprofile",
-onFailure: "handleDeleteProfileFailure"},
-*/
-
 enyo.kind({
 	name: "WiFi",
 	layoutKind: "FittableRowsLayout",
