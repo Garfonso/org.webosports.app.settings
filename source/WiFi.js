@@ -77,19 +77,27 @@ enyo.kind({
 	palm: false,
 	components: [
 		{kind: "Signals", ondeviceready: "deviceready"},
-		{name: "PasswordPopup",
-		kind: "onyx.Popup",
-		modal: true,
-		classes: "password-popup",
-		onShow: "popupShown",
-		components:[
-			{content: "Enter password for", style: "display: inline;"},
-			{name: "PopupSSID", content: "SSID", style: "margin-left: 4px; display: inline;"},
-			{kind: "onyx.InputDecorator", style: "display: block; margin-top: 16px;", components:[
-				{name: "PasswordInput", kind: "onyx.Input", type: "password", style: "width: 100%", onkeypress: "passwordKeyPress"}
-			]},
-		]},
-		
+		{
+			name: "PasswordPopup",
+			kind: "onyx.Popup",
+			modal: true,
+			classes: "password-popup",
+			onShow: "popupShown",
+			components:[
+				{content: "Enter password for", style: "display: inline;"},
+				{name: "PopupSSID", content: "SSID", style: "margin-left: 4px; display: inline;"},
+				{
+					kind: "onyx.InputDecorator",
+					style: "display: block; margin-top: 16px;",
+					components:[
+						{name: "PasswordInput", kind: "onyx.Input", type: "password", style: "width: 100%", onkeypress: "passwordKeyPress"},
+					],
+				},
+				{tag: "br"},
+				{name: "OkButton", kind: "onyx.Button", style:"margin-right: 4px", content: "Finish", ontap: "onPasswordOk"},
+				{name: "CancelButton", kind: "onyx.Button", content: "Cancel", ontap: "onPasswordCancel"},
+			],
+		},
 		{kind: "onyx.Toolbar",
 		style: "line-height: 28px;",
 		components:[
@@ -222,17 +230,28 @@ enyo.kind({
 	popupShown: function(inSender, inEvent) {
 		inSender.children[2].hasNode().focus();
 	},
+	onPasswordOk: function(inSender, inEvent) {
+		var password = this.$.PasswordInput.getValue();
+		this.handlePasswordEntered(password);
+		delete password;
+		this.$.PasswordInput.setValue("");
+	},
+	onPasswordCancel: function(inSender, inEvent) {
+		this.$.PasswordInput.setValue("");
+		this.$.PasswordPopup.hide();
+	},
 	passwordKeyPress: function(inSender, inEvent) {
-		//If return pressed
+		// if return key pressed
 		if(inEvent.keyCode == 13) {
-			this.$.PasswordPopup.hide();
-			
-			var p = inSender.getValue();
-			this.connect(this, {ssid: this.currentSSID, password: p});
-			
-			inSender.setValue("");
-			delete p;
+			var password = this.$.PasswordInput.getValue();
+			this.handlePasswordEntered(password);
+			this.$.PasswordInput.setValue("");
+			delete password;
 		}
+	},
+	handlePasswordEntered: function(pwd) {
+		this.$.PasswordPopup.hide();
+		this.connect(this, {ssid: this.currentSSID, password: pwd});
 	},
 	//Action Functions
 	showSearch: function(inSender, inEvent) {
